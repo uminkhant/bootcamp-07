@@ -1,6 +1,7 @@
 package com.jdc.mkt.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.SQLException;
 
@@ -48,15 +49,27 @@ public class PersonTest {
 		assertEquals(1, row);
 		
 	}
+	
 	@ParameterizedTest
-	@CsvSource({"1","2","3"})
-	@DisplayName("3.delete into person table")
+	@CsvSource({"Mr.Andrew,1","Ms.Susan,2","Mr.William,3"})
+	@DisplayName("3.find by person table")
 	@Order(3)
-	void testPerson(int id) throws SQLException {
+	void testFindById(String name,int id) throws SQLException {
+		var person = pService.findById(id);
+		assertNotNull(person);
+		assertEquals(name, person.getName());
+	}
+	
+	//@ParameterizedTest
+	@CsvSource({"1","2","3"})
+	@DisplayName("4.delete into person table")
+	@Order(4)
+	void testDeletePerson(int id) throws SQLException {
 		var row = pService.delete(id);
 		assertEquals(1, row);
 		
 	}
+	
 	
 	@ParameterizedTest
 	@Disabled
@@ -65,18 +78,6 @@ public class PersonTest {
 		var row = aService.insert(street,township,city);
 		assertEquals(1, row);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@AfterAll
 	static void close() {}

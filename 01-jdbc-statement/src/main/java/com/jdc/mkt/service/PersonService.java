@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.jdc.mkt.entity.Person;
+
 public class PersonService {
 
 	private static final String URL = "jdbc:mysql://localhost:3306/testdb";
@@ -45,6 +47,27 @@ public class PersonService {
 		var row = stmt
 				.executeUpdate("delete from person_tbl where id = %d ".formatted(id));
 		return row;
+	}
+	
+	public Person findById(int id) throws SQLException {
+		String sql = "select * from person_tbl where id = %d".formatted(id);
+		try(
+		var con = getConnection();
+		var stmt = con.createStatement()){
+			var rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				var p = new Person();
+				p.setId(rs.getInt(1));
+				p.setName(rs.getString(2));
+				return p;
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	
