@@ -6,9 +6,16 @@ import com.jdc.mkt.service.CustomerService;
 import static com.jdc.mkt.utils.MysqlConnection.getConnection;
 
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class CustomerServiceImpl implements CustomerService{
 
+	private Customer[] customers;
+	
+	public CustomerServiceImpl() {
+		customers = new Customer[0];
+	}
+	
 	@Override
 	public int insertCustomer(Customer cu) {
 		String sql = "insert into customer_tbl (name,address_id) values (?,?)";
@@ -51,7 +58,6 @@ public class CustomerServiceImpl implements CustomerService{
 		return 0;
 	}
 	
-
 	@Override
 	public int updateCustomer(Customer cu) {
 		return 0;
@@ -59,11 +65,69 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Customer[] getCustomers(Customer cu) {
-		return null;
+		String sql = """
+				select c.id,c.name,a.id,a.street,a.township,a.city from customer_tbl c
+				join address_tbl a on c.address_id = a.id
+				where lower(c.name) like lower(?)
+				""";
+		
+		try(var con = getConnection();
+				var stmt = con.prepareStatement(sql)){
+			stmt.setString(1,cu.getName());
+			
+			var rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				var c = new Customer();
+				c.setId(rs.getInt("c.id"));
+				c.setName(rs.getString("c.name"));
+				
+				var a = new Address();
+				a.setId(rs.getInt("a.id"));
+				a.setStreet(rs.getString("a.street"));
+				a.setTownship(rs.getString("a.township"));
+				a.setCity(rs.getString("a.city"));
+				c.setAddress(a);
+				addCustomer(c);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return customers;
 	}
+	
+	
 
 	@Override
 	public void clearCustomer() {
+		String sql = "truncate table customer_tbl";
+		try(var con = getConnection();
+				var stmt = con.prepareStatement(sql)){		
+			stmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
+	void addCustomer(Customer c) {
+		customers = Arrays.copyOf(customers, customers.length+1);
+		customers[customers.length-1] = c;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

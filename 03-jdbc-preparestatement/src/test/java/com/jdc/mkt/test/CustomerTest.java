@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import com.jdc.mkt.entity.Address;
 import com.jdc.mkt.entity.Customer;
@@ -34,6 +35,17 @@ public class CustomerTest {
 		customer.setAddress(address);
 		int result = service.insertCustomer(customer);
 		assertEquals(id, result);
+	}
+	
+	@ParameterizedTest
+	@ValueSource(ints = 1)
+	@Order(2)
+	void search(int size) {
+		var cu = new Customer("w".concat("%"));
+		var ad = new Address();
+		cu.setAddress(ad);
+		var result = service.getCustomers(cu);
+		assertEquals(1, result.length);
 	}
 }
 
