@@ -23,7 +23,7 @@ public class CustomerTest {
 	@BeforeAll
 	static void init() {
 		service = new CustomerServiceImpl();
-		service.clearCustomer();
+		service.clear();
 	}
 	
 	@ParameterizedTest
@@ -44,7 +44,7 @@ public class CustomerTest {
 		var cu = new Customer("w".concat("%"));
 		var ad = new Address();
 		cu.setAddress(ad);
-		var result = service.getCustomers(cu);
+		var result = service.select(cu);
 		assertEquals(1, result.length);
 	}
 }

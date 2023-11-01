@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Customer[] getCustomers(Customer cu) {
+	public Customer[] select(Customer cu) {
 		String sql = """
 				select c.id,c.name,a.id,a.street,a.township,a.city from customer_tbl c
 				join address_tbl a on c.address_id = a.id
@@ -100,7 +100,7 @@ public class CustomerServiceImpl implements CustomerService{
 	
 
 	@Override
-	public void clearCustomer() {
+	public void clear() {
 		String sql = "truncate table customer_tbl";
 		try(var con = getConnection();
 				var stmt = con.prepareStatement(sql)){		
