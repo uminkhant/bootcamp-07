@@ -30,7 +30,18 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public int update(Category category) {
-		// TODO Auto-generated method stub
+		String sql = "update category_tbl set name = ?,active = ? where active=1 and id = ?";
+		try(var con = getConnection();
+				var stmt = con.prepareStatement(sql)){
+			stmt.setString(1, category.getName());
+			stmt.setBoolean(2, category.isActive());
+			stmt.setInt(3, category.getId());
+		
+			return stmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
@@ -42,7 +53,14 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		String sql = "truncate table category_tbl";
+		try(var con = getConnection();
+				var stmt = con.prepareStatement(sql)){		
+			stmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 

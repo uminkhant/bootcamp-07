@@ -31,10 +31,10 @@ public class ProductTest {
 		pService = new ProductServiceImpl();
 		catService = new CategoryServiceImpl();
 		pService.clear();
-		catService.clear();
+		//catService.clear();
 	}
 	
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource({"1,T-shirt","2,Trouser"})
 	@DisplayName("01.insert into category ")
 	@Order(1)
@@ -43,13 +43,37 @@ public class ProductTest {
 		assertEquals(id,result);
 	}
 	
+	@ParameterizedTest
+	@CsvSource({"1,T-shirts","2,Trouser"})
+	@DisplayName("01.Update into category ")
+	@Order(1)
+	void updateCategory(int id ,String name) {
+		var cat = new Category(name);
+		cat.setId(id);
+		cat.setActive(true);
+		var result = catService.update(cat);
+		assertEquals(1,result);
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"1,T-shirts","2,Trouser"})
+	@DisplayName("01.Delete into category ")
+	@Order(2)
+	void deleteCategory(int id ,String name) {
+		var cat = new Category(name);
+		cat.setId(id);
+		cat.setActive(false);
+		var result = catService.update(cat);
+		assertEquals(1,result);
+	}
+	
 	
 	@ParameterizedTest
 	@CsvFileSource(resources = "/product.csv"
 	,delimiter = '\t',
 	numLinesToSkip = 1)
 	@DisplayName("02.insert into product")
-	@Order(2)
+	@Order(3)
 	void insertProduct(int id,String name,double price,String size,int catId) {
 		var product = new Product(name,price,Size.valueOf(size));
 		var category = new Category();
