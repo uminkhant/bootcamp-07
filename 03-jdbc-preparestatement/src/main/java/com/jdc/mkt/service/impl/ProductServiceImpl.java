@@ -5,19 +5,23 @@ import static com.jdc.mkt.utils.MysqlConnection.getConnection;
 import java.sql.Statement;
 import java.util.Arrays;
 
+import com.jdc.mkt.dto.ProductCountByCategory;
 import com.jdc.mkt.entity.Category;
 import com.jdc.mkt.entity.Product;
 import com.jdc.mkt.entity.Product.Size;
+import com.jdc.mkt.service.ProductCountByCategoryService;
 import com.jdc.mkt.service.ProductService;
 
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements ProductService,ProductCountByCategoryService {
 	
 	private Product[]products;
 	private  Object[] objs;
+	private ProductCountByCategory[]dto;
 	
 	public ProductServiceImpl() {
 		products = new Product[0];
 		objs = new Object[0];
+		dto = new ProductCountByCategory[0];
 	}
 	
 	
@@ -30,6 +34,10 @@ public class ProductServiceImpl implements ProductService {
 	private void addObj(Object obj) {
 		objs = Arrays.copyOf(objs, objs.length+1);
 		objs[objs.length-1] = obj;
+	}
+	private void addProductDto(ProductCountByCategory p) {
+		dto = Arrays.copyOf(dto, dto.length+1);
+		dto[dto.length-1] = p;
 	}
 
 	@Override
@@ -130,6 +138,31 @@ public class ProductServiceImpl implements ProductService {
 			e.printStackTrace();
 		}
 
+	}
+
+
+
+	@Override
+	public ProductCountByCategory[] selectCount() {
+		String sql = """
+				select c.name,count(p.name) count
+				from product_tbl p join category_tbl c on p.category_id = c.id 
+				group by c.name
+				""";
+		try (var con = getConnection(); var stmt = con.prepareStatement(sql)) {
+			var rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				var d = new ProductCountByCategory(
+						rs.getString("c.name"),
+						rs.getInt("count"));
+				addProductDto(d);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
 	}
 	
 	
