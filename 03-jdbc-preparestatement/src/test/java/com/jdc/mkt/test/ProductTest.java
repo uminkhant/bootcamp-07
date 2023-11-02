@@ -102,6 +102,9 @@ public class ProductTest {
 		"T-shirts,,,",
 		"T-shirts,h,,",
 		",a,,",
+		",,,SMALL",
+		",,25000,",
+		"T-shirts,a,25000,MEDIUM"
 	})
 	void selectProduct(String catName,String pName,Double price,String size) {
 		Size s = null != size ? Size.valueOf(size):null;
