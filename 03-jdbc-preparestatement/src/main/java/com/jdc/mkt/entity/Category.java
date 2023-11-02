@@ -9,11 +9,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Category {
 
 	private int id;
-	@NonNull
+	
 	private String name;
 	private boolean active;
+	
+	public Category(String name) {
+		super();
+		this.name = name;
+	}
+	
+	
 }
