@@ -5,6 +5,8 @@ import javax.persistence.Persistence;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class AccountTest {
 
@@ -15,6 +17,9 @@ public class AccountTest {
 		emf = Persistence.createEntityManagerFactory("04-hibernate-jpa");
 	}
 	
-	@Test
-	void test() {}
+	@ParameterizedTest
+	@CsvSource("")
+	void test() {
+		
+	}
 }

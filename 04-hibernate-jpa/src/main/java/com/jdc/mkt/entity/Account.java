@@ -31,10 +31,11 @@ import javax.persistence.TableGenerator;
 },indexes = {
 		@Index(columnList = "name")
 })
-@SecondaryTables({
-	@SecondaryTable(name = "address_tbl"),
-	@SecondaryTable(name ="contact_tbl")
-})
+//@SecondaryTables({
+//	@SecondaryTable(name = "address_tbl"),
+//	@SecondaryTable(name ="contact_tbl")
+//})
+@SecondaryTable(name = "address_tbl")
 public class Account implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +49,7 @@ public class Account implements Serializable{
 	private String password;
 	private Contact contact;
 	
-	@Column(table = "contact_tbl")
+	@Column(table = "address_tbl")
 	private String street;
 	@Column(table = "address_tbl")
 	private String township;
