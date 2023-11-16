@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.JoinColumn;
 
 @Getter
 @Setter
@@ -23,6 +25,9 @@ public class Service implements Serializable{
 	private ServiceType serviceType;
 	private int price;
 	@ManyToOne
+	@JoinTable(name = "service_vehi_tbl", 
+	joinColumns = @JoinColumn(name = "service_id"), 
+	inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
 	private Vehicle vehicles;
 	
 	public enum ServiceType{

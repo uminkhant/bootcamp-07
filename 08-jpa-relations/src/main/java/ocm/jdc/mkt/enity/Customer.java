@@ -16,20 +16,18 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Customer implements Serializable{
+public class Customer extends Account implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@NonNull
-	private String name;
+	
 	@NonNull
 	@AttributeOverride(name = "email" ,column = @Column(name = "p_email"))
 	@AttributeOverride(name ="phone",column = @Column(name = "p_phone"))
@@ -38,6 +36,9 @@ public class Customer implements Serializable{
 	@AttributeOverride(name ="phone",column = @Column(name = "s_phone"))
 	private Contact secondaryContact;
 	@OneToOne
+	@JoinTable(name ="cu_address_tbl", joinColumns = @JoinColumn(name = "cu_id",referencedColumnName = ""), 
+	inverseJoinColumns = @JoinColumn(name = "addres_id")
+	)
 	private Address address;
 }
 
