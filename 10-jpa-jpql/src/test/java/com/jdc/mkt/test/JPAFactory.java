@@ -3,12 +3,12 @@ package com.jdc.mkt.test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JPAFactory {
 
@@ -17,7 +17,7 @@ public class JPAFactory {
 	
 	@BeforeAll
 	static void init() {
-		emf = Persistence.createEntityManagerFactory("Jpa-entities");
+		emf = Persistence.createEntityManagerFactory("jpa-jpql");
 	}
 	
 	@AfterAll
@@ -27,13 +27,16 @@ public class JPAFactory {
 		
 	}
 	
-//	@BeforeEach
+	@BeforeEach
 	void createEm() {
 		em = emf.createEntityManager();
 	}
-//	@AfterEach
+	@AfterEach
 	void closeEm() {
 		if(null != em && em.isOpen())
 			em.close();
 	}
+	
+	@Test
+	void test() {}
 }
