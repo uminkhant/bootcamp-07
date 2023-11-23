@@ -2,6 +2,7 @@ package com.jdc.mkt.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,8 @@ public class Product {
 	private int dtPrice;
 	@Column(name="ws_price")
 	private int wsPrice;
-	@ManyToOne(optional = false)
+	
+	@ManyToOne
 	private Category category;
 	@Column(columnDefinition = "tinyint(1) default 1")
 	private boolean active;

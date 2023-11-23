@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,5 +33,6 @@ public class Category {
 	private String name;
 	@Column(columnDefinition = "tinyint(1) default 1")
 	private boolean active;
-	
+	@OneToMany(mappedBy = "category")
+	private List<Product> products;
 }
