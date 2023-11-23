@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -19,6 +20,9 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Entity
 @Table(name ="product")
+@NamedQuery(name = "product.getAllProduct",query = "select p from Product p where p.active = true")
+@NamedQuery(name ="product.getProductCount",query ="select count(p) from Product p")
+@NamedQuery(name= "product.updateProductById",query = "update Product p set p.name = :name,p.dtPrice = :price where p.id = :id")
 public class Product {
 
 	@Id
@@ -32,7 +36,7 @@ public class Product {
 	private int dtPrice;
 	@Column(name="ws_price")
 	private int wsPrice;
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Category category;
 	@Column(columnDefinition = "tinyint(1) default 1")
 	private boolean active;
